@@ -1,6 +1,6 @@
 ## scrum planning poker
 
-used:
+used all usual suspects:
  - node.js
  - socket.io
  - knockout.js
@@ -9,4 +9,5 @@ used:
 
 to run:  
  `npm install`  
- `node server.js`
+ `node server.js`  
+ navigate to http://localhost:3000

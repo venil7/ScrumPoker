@@ -14,14 +14,9 @@
 
   var io = socket.listen(server);
 
-  var Room = function() {
-    this._people = {};
-  };
-
   var Server = function(_und, io) {
     this.__ = _und;
     this.__io = io;
-    this.__rooms = {};
   };
 
   Server.prototype.init = function() {
@@ -29,26 +24,48 @@
     this.__io.sockets.on('connection', function (socket) {
       /*joining room*/
       socket.on('join', function (data) {
-        var totalInRoom = that.__io.sockets.clients(data.room).length;
+        data = that.identify(data, socket);
+        var totalInRoom = that.roomMembers(data.room);
         if (totalInRoom < 8) {
-          if (totalInRoom == 0) {
-            that.__rooms[data.room] = new Room();
+          if (totalInRoom != 0) {
+            /*notify everyone*/
+            that.__io.sockets.in(data.room).emit('join', data);
           }
-          that.__rooms[data.room]._people[socket.id] = data;
           socket.join(data.room);
+        } else {
+          /*too many ppl in room*/
+          socket.disconnect();
         }
       });
 
       /*leaving room*/
       socket.on('leave', function (data) {
         socket.leave(data.room);
+        /*notify everyone left in the room*/
+        data = that.identify(data, socket);
+        var totalInRoom = that.roomMembers(data.room);
+        if (totalInRoom != 0) {
+          that.__io.sockets.in(data.room).emit('leave', data);
+        }
       });
 
-      /*sending vote*/
-      socket.on('vote', function (data) {
-
+      /*sending update*/
+      socket.on('update', function (data) {
+        /*notify everyone*/
+        data = that.identify(data, socket);
+        that.__io.sockets.in(data.room).emit('update', data);
       });
     });
+  };
+
+  Server.prototype.roomMembers = function(room) {
+    return this.__io.sockets.clients(room).length;
+  };
+
+  /*adds identity info to update packet*/
+  Server.prototype.identify = function(data, socket) {
+    data.id = socket.id;
+    return data;
   };
 
   //start pocker server

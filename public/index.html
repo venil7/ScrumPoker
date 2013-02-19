@@ -60,12 +60,15 @@
     <h3>Cards</h3>
     <div class="row" data-bind="foreach: _cards">
       <div class="span1">
-        <div class="card" data-bind="text: $data, click: $parent.vote"></div>
+        <div class="card" data-bind="text: $data, click: function(){$parent.vote.call($parent, $data)}"></div>
       </div>
     </div>
 
     <h3>People</h3>
-     <div class="row" data-bind="foreach: _people">
+    <div class="row" data-bind="foreach: _people">
+      <div class="span1">
+        <div class="person" data-bind="text: $data.name"></div>
+      </div>
     </div>
 
 
