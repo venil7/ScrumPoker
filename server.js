@@ -2,7 +2,7 @@
 
   var static = require('node-static');
   var socket = require('socket.io');
-  var _ = require('underscore');
+  /*var _ = require('underscore');*/
   
   var file = new(static.Server)('./public');
 
@@ -15,7 +15,7 @@
   var io = socket.listen(server);
 
   var Server = function(_und, io) {
-    this.__ = _und;
+    /*this.__ = _und;*/
     this.__io = io;
   };
 
@@ -39,15 +39,15 @@
       });
 
       /*leaving room*/
-      socket.on('leave', function (data) {
-        socket.leave(data.room);
-        /*notify everyone left in the room*/
-        data = that.identify(data, socket);
-        var totalInRoom = that.roomMembers(data.room);
-        if (totalInRoom != 0) {
-          that.__io.sockets.in(data.room).emit('leave', data);
-        }
-      });
+      // socket.on('leave', function (data) {
+      //   socket.leave(data.room);
+      //   /*notify everyone left in the room*/
+      //   data = that.identify(data, socket);
+      //   var totalInRoom = that.roomMembers(data.room);
+      //   if (totalInRoom != 0) {
+      //     that.__io.sockets.in(data.room).emit('leave', data);
+      //   }
+      // });
 
       /*sending update*/
       socket.on('update', function (data) {
@@ -55,6 +55,19 @@
         data = that.identify(data, socket);
         that.__io.sockets.in(data.room).emit('update', data);
       });
+
+      /*disconnect, treat as leave*/
+      socket.on('disconnect', function () {
+        var rooms = that.__io.sockets.manager.roomClients[socket.id];
+        for(var room in rooms) {
+          if ((room != '') && (rooms[room])) {
+            /*removing a slash*/
+            room = room.substring(1);
+            that.__io.sockets.in(room).emit('leave', { room : room, id : socket.id });
+          }
+        }
+      });
+
     });
   };
 
@@ -69,6 +82,6 @@
   };
 
   //start pocker server
-  new Server(_, io).init()
+  new Server(null, io).init()
   
 })();
