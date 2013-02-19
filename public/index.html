@@ -8,11 +8,7 @@
   <meta name="author" content="">
 
   <!-- Le styles -->
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
-  <style type="text/css">
-    body { padding-top: 60px; padding-bottom: 40px; }
-  </style>
-  <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href='css/style.css' rel='stylesheet' type='text/css'>
 
   <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -30,47 +26,42 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="#">Instant Planning Pocker</a>
+        <a class="brand" href="#">Instant Planning Poker</a>
       </div>
     </div>
   </div>
 
   <div class="container">
     
-    <div class="row">
-      <div class="span3">
-        Logged in as: <span data-bind="text: _name"></span> <br/>
-        Pocker room: <span data-bind="text: _room"></span>
-      </div>
+    <div class="alert">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Warning!</strong> You need to enter your name and room.
     </div>
-
+    
     <div class="hero-unit">
-      <h3 id="subject" data-bind="text: _subj">xxx</h3>
-      <input type="text" data-bind="value: _subj" />
-      <div class="well">
-        This title is used to describe a task being estimated.
-      </div>
+      <p class="pull-right text-info">Logged in as <span data-bind="text: _name"></span>@<span data-bind="text: _room"></span></p>
+      <h2>Subject: <span id="subject" data-bind="text: _subj"></span></h2>
+      <input type="text" data-bind="value: _subj" class="input-large">
+      <p class="muted">Enter subject above to describe a task being estimated.</p>
     </div>
 
     <h3>Cards</h3>
     <div class="row" data-bind="foreach: _cards">
       <div class="span1">
-        <div class="card" data-bind="text: $data, click: function(){$parent.vote.call($parent, $data)}"></div>
+        <div class="box card">
+          <h1 class="text-center" data-bind="text: $data, click: function(){$parent.vote.call($parent, $data)}"></h1>
+        </div>
       </div>
     </div>
 
-    <h3>People</h3>
+    <h3>People <small>(Max. 12)</small></h3>
     <div class="row" data-bind="foreach: _people">
       <div class="span1">
-        <div class="person" data-bind="text: $data.name"></div>
+        <div class="box person">
+          <span class="label label-inverse" data-bind="text: $data.name"></span>
+        </div>
       </div>
     </div>
-
 
     <hr />
     <footer>

@@ -1,10 +1,11 @@
 !(function($, io, ko, bootbox) {
   
   /*client side class here..*/
-  var Client = function(ko, io) {
+  var Client = function(ko, io, $) {
     this.__ko = ko;
     this.__io = io;
-    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, "Coffee"]);
+    this.__jq = $;
+    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, "C"]);
     this._people = this.__ko.observableArray([]);
   };
 
@@ -21,13 +22,15 @@
     this.__socket.on('update', function(data){that.onUpdate.call(that, data);});
     this.__socket.on('leave', function(data){that.onLeave.call(that, data);});
     this.__socket.on('join', function(data){that.onJoin.call(that, data);});
+    this._subj.subscribe(function(newVal) {
+      that.update.call(that);
+      that.$resetCards();
+      /*clear everyone's votes*/
+    });
 
     this.__socket.emit('join', this.state());
 
-    this._subj.subscribe(function(newVal) {
-      that.update.call(that);
-      /*clear everyone's votes*/
-    });
+    this.$initialSetup();
   };
   
   Client.prototype.onUpdate = function(data) {
@@ -69,12 +72,25 @@
     };
   };
 
+  /*jQuery methods down there..*/
+  Client.prototype.$initialSetup = function() {
+    var that = this;
+    this.__jq('.card').click(function() {
+      that.__jq(this).addClass('selected').parent().siblings().find('.card').removeClass('selected');
+    });
+    this.__jq('.alert').hide();
+  };
+
+  Client.prototype.$resetCards = function() {
+    this.__jq('.card').removeClass('selected');
+  };
+
   /*'on document load' code below*/
   $(function() {
 
     var room = window.location.hash.substring(1);
     var name = "Bob"; 
-    var client = new Client(ko, io);
+    var client = new Client(ko, io, $);
     debug = client; /*REMOVE*/ 
 
 
@@ -83,7 +99,7 @@
       if (n) {
         name = n;
         if (!room) {
-          bootbox.prompt("Setup a room for Planning Pocker session:", function(r) {
+          bootbox.prompt("Choose a name for poker room", function(r) {
             if (r !== null) {
               room = r;
               window.location.hash = "#" + room;

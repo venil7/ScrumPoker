@@ -1,0 +1,10 @@
+@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap.css);
+@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css);
+@import url(http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps);
+@import url(http://fonts.googleapis.com/css?family=PT+Serif);
+body{padding-top:60px;padding-bottom:40px;font-family:'PT Serif';background-image:url(../img/back.png);}body div.container div.hero-unit{padding-top:20px;padding-bottom:20px;background-color:powderblue;background-image:url(../img/stripes.png);}
+body div.container a.brand{font-family:'Oleo Script Swash Caps';font-size:32px;}
+body div.container div.box{display:block;height:100px;border-radius:3px;box-shadow:2px 2px SeaGreen;}body div.container div.box.card{background-image:url(../img/green.png);background-position:50% 50%;cursor:pointer;}body div.container div.box.card h1{padding-top:25px;color:Yellow;text-shadow:2px 2px 2px #040404;}
+body div.container div.box.card.selected{background-image:url(../img/red.png);}body div.container div.box.card.selected h1{color:black;text-shadow:2px 2px 2px #fff;}
+body div.container div.box.person{background-image:url(../img/geek.png);background-position:center top;background-repeat:no-repeat;}
+body footer p{font-family:'Oleo Script Swash Caps';}

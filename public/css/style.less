@@ -1,0 +1,57 @@
+@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap.css);
+@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css);
+@import url(http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps);
+@import url(http://fonts.googleapis.com/css?family=PT+Serif);
+
+body { 
+  padding-top: 60px; 
+  padding-bottom: 40px; 
+  font-family: 'PT Serif';
+  background-image: url(../img/back.png);
+  div.container {
+    div.hero-unit {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      // box-shadow: 2px 2px #aaa;
+      background-color: powderblue;
+      background-image: url(../img/stripes.png)
+    }
+    a.brand {
+      font-family: 'Oleo Script Swash Caps';
+      font-size: 32px;
+    }
+    div.box {
+      display: block;
+      height: 100px;
+      border-radius: 3px;
+      box-shadow: 2px 2px SeaGreen;
+      &.card {
+        background-image: url(../img/green.png);
+        background-position: 50% 50%;
+        cursor: pointer;
+        h1 {
+          padding-top: 25px;
+          color: Yellow;
+          text-shadow: 2px 2px 2px rgba(4,4,4,1);
+        }
+        &.selected {
+          background-image: url(../img/red.png);
+          h1 {
+            color: black;
+            text-shadow: 2px 2px 2px #fff;
+          }
+        }
+      }
+      &.person {
+        background-image: url(../img/geek.png);
+        background-position: center top;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+  footer {
+    p {
+      font-family: 'Oleo Script Swash Caps';
+    }
+  }
+}
