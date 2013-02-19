@@ -28,10 +28,12 @@
         var totalInRoom = that.roomMembers(data.room);
         if (totalInRoom < 8) {
           if (totalInRoom != 0) {
-            /*notify everyone*/
+            /*notify everyone, but ourselves*/
             that.__io.sockets.in(data.room).emit('join', data);
           }
           socket.join(data.room);
+          /*notify ourselves about registering in a room*/
+          socket.emit('update', data);
         } else {
           /*too many ppl in room*/
           socket.disconnect();

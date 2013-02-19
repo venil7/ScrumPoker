@@ -10,22 +10,34 @@
 
   Client.prototype.init = function(name, room) {
     var that = this;
+    
     this._name = this.__ko.observable(name);
     this._room = this.__ko.observable(room);
     this._subj = this.__ko.observable("Task to estimate");
     this._vote = this.__ko.observable(null);
     this.__ko.applyBindings(this);
+    
     this.__socket = this.__io.connect();
+    this.__socket.on('update', function(data){that.onUpdate.call(that, data);});
+    this.__socket.on('leave', function(data){that.onLeave.call(that, data);});
+    this.__socket.on('join', function(data){that.onJoin.call(that, data);});
+
     this.__socket.emit('join', this.state());
-    this.__socket.on('update', function(data){that.onUpdate.call(that, data)});
-    this.__socket.on('leave', function(data){that.onLeave.call(that, data)});
-    this.__socket.on('join', function(data){that.onJoin.call(that, data)});
+
+    this._subj.subscribe(function(newVal) {
+      that.update.call(that);
+      /*clear everyone's votes*/
+    });
   };
   
   Client.prototype.onUpdate = function(data) {
     this._people.remove(function(el){return el.id == data.id});
     this._people.push(data);
     this._people.sort();
+
+    if (this._subj() != data.subj) {
+      this._subj(data.subj);
+    }
   };
 
   Client.prototype.onJoin = function(data) {
