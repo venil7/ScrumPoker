@@ -1,12 +1,11 @@
 !(function($, io, ko, bootbox) {
   
   /*client side class here..*/
-  var Client = function(ko, io, $, window) {
+  var Client = function(ko, io, pubsub) {
     this.__ko = ko;
     this.__io = io;
-    this.__jq = $;
-    this.__pubsub = this.__jq(window); /*this will be used as event publisher/subscriber*/
-    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, "C"]);
+    this.__pubsub = pubsub /*this will be used as event publisher/subscriber*/
+    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, 'C']);
     this._people = this.__ko.observableArray([]);
   };
 
@@ -18,16 +17,13 @@
     this._subj = this.__ko.observable("Task to estimate");
     this._vote = this.__ko.observable(null);
     this._voteComplete = this.__ko.computed(function() {
-      var result = 0;
       var people = this._people();
       for(var i in people) {
         var person = people[i];
-        if (person.vote) {
-          result += person.vote;
-        } else {
+        if (person.vote == null) {
           return false;
         }
-        return result;
+        return true;
       }
     }, this);
     this._voteComplete.subscribe(function (nv) {
@@ -107,7 +103,7 @@
 
     var room = window.location.hash.substring(1);
     var name = "Bob"; 
-    var client = new Client(ko, io, $, window);
+    var client = new Client(ko, io, $(window));
     debug = client; /*REMOVE*/ 
 
 
