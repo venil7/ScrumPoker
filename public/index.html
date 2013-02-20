@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Bootstrap, from Twitter</title>
+  <title>Instant PlanningPoker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -48,8 +48,8 @@
     <h3>Cards</h3>
     <div class="row" data-bind="foreach: _cards">
       <div class="span1">
-        <div class="box card">
-          <h1 class="text-center" data-bind="text: $data, click: function(){$parent.vote.call($parent, $data)}"></h1>
+        <div class="box card" data-bind="click: function(){$parent.vote.call($parent, $data)}">
+          <h1 class="text-center" data-bind="text: $data"></h1>
         </div>
       </div>
     </div>
