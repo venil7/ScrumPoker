@@ -2,7 +2,6 @@
 
   var static = require('node-static');
   var socket = require('socket.io');
-  /*var _ = require('underscore');*/
   
   var file = new(static.Server)('./public');
 
@@ -15,7 +14,6 @@
   var io = socket.listen(server);
 
   var Server = function(_und, io) {
-    /*this.__ = _und;*/
     this.__io = io;
   };
 
