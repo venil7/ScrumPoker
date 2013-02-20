@@ -38,6 +38,7 @@
     this.__socket.on('update', function(data){that.onUpdate.call(that, data);});
     this.__socket.on('leave', function(data){that.onLeave.call(that, data);});
     this.__socket.on('join', function(data){that.onJoin.call(that, data);});
+    this.__socket.on('message', function(message){that.__pubsub.trigger('message', message);});
     this._subj.subscribe(function(newVal) {
       that.update.call(that);
       that.__pubsub.trigger('reset');
@@ -138,6 +139,10 @@
 
     client.on('reveal', function(){
       // alert(1);
+    });
+
+    client.on('message', function(message){
+      bootbox.alert(message);
     });
 
   });
