@@ -24,8 +24,8 @@ body {
       display: block;
       height: 100px;
       border-radius: 3px;
-      box-shadow: 2px 2px SeaGreen;
       &.card {
+        box-shadow: 2px 2px SeaGreen;
         background-image: url(../img/green.png);
         background-position: 50% 50%;
         cursor: pointer;
@@ -43,14 +43,11 @@ body {
         }
       }
       &.person {
-        background-image: url(../img/geek.png);
-        background-position: center top;
-        background-repeat: no-repeat;
         position: relative;
         -webkit-perspective: 800px;
         -moz-perspective: 800px;
-         -o-perspective: 800px;
-         perspective: 800px;
+        -o-perspective: 800px;
+        perspective: 800px;
         div.flippable {
           width: 100%;
           height: 100%;
@@ -63,9 +60,15 @@ body {
           -moz-transition: -moz-transform 1s;
           -o-transition: -o-transform 1s;
           transition: transform 1s;
+          -webkit-transform-origin: right center;
+          -moz-transform-origin: right center;
+          -o-transform-origin: right center;
+          transform-origin: right center;
           div.face {
             display: block;
             position: absolute;
+            border-radius: 3px;
+            box-shadow: 2px 2px SeaGreen;
             width: 100%;
             height: 100%;
             -webkit-backface-visibility: hidden;
@@ -73,14 +76,22 @@ body {
             -o-backface-visibility: hidden;
             backface-visibility: hidden;
             &.front {
-              background: red;
+              background-image: url(../img/user.png);
+              background-color: rgba(0,0,0,0.1);
+              background-position: center center;
+              background-repeat: no-repeat;
             }
             &.back {
-               background: blue;
-               -webkit-transform: rotateY( 180deg );
-               -moz-transform: rotateY( 180deg );
-               -o-transform: rotateY( 180deg );
-               transform: rotateY( 180deg );
+              background: blue;
+              -webkit-transform: rotateY( 180deg );
+              -moz-transform: rotateY( 180deg );
+              -o-transform: rotateY( 180deg );
+              transform: rotateY( 180deg );
+              background-image: url(../img/red.png);
+              h1 {
+                color: black;
+                text-shadow: 2px 2px 2px #fff;
+              }
             }
           }
           &.flipped {

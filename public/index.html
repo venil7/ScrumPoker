@@ -40,6 +40,7 @@
       <h2>Subject: <span id="subject" data-bind="text: _subj"></span></h2>
       <input type="text" data-bind="value: _subj" class="input-large">
       <p class="muted">Enter subject above to describe a task being estimated.</p>
+      <p class="text-info">Invite more people to this room: <code data-bind="text: window.location"></code>.</p>
     </div>
 
     <h3>Cards</h3>
@@ -51,7 +52,7 @@
       </div>
     </div>
 
-    <h3>People <small>(Max. 12)</small></h3>
+    <h3>People <small>(<span data-bind="text: _people().length"></span>/12)</small></h3>
     <div class="row" data-bind="foreach: _people">
       <div class="span1">
         <div class="box person" data-bind="attr: {id: $data.id, title: $data.name}">
@@ -60,9 +61,9 @@
               <span class="label label-inverse" data-bind="text: $data.name"></span>
               
             </div>
-            <div class="face back" data-bind="text: $data.name">
+            <div class="face back">
               <span class="label label-inverse" data-bind="text: $data.name"></span>
-              
+              <h1 class="text-center" data-bind="text: $data.vote"></h1>
             </div>
           </div>
         </div>
@@ -73,7 +74,7 @@
     <footer>
       <p class="text-center footer-note">
         &copy; DarkRuby 2013,<br>
-        Made to be used with what really deserves to be called a browser: Firefox, Chrome &amp; Safari.<br>
+        Made to be used with what really deserves to be called a proper browser.<br>
         Powered by: Node.js, Socket.io, Twitter Bootstrap, Knockout.js, jQuery and Brain.</p>
     </footer>
   </div> <!-- /container -->

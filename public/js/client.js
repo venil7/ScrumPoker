@@ -15,6 +15,9 @@
     this._name = this.__ko.observable(name);
     this._room = this.__ko.observable(room);
     this._subj = this.__ko.observable("Task to estimate");
+    this._subj.subscribe(function(){
+      that._vote(null);
+    });
     this._vote = this.__ko.observable(null);
     this._voteComplete = this.__ko.computed(function() {
       var people = this._people();
@@ -23,13 +26,13 @@
         if (person.vote == null) {
           return false;
         }
-        return true;
       }
+      return true;
     }, this);
     this._voteComplete.subscribe(function (nv) {
       if (nv) {
         that.__pubsub.trigger('reveal');
-      }
+      } 
     });
 
     this.__ko.applyBindings(this);
@@ -138,7 +141,11 @@
     });
 
     client.on('reveal', function(){
-      // alert(1);
+      $('.flippable').each(function(i, val) {
+          setTimeout(function(){
+              $(val).addClass('flipped');
+          }, i*50);
+      });
     });
 
     client.on('message', function(message){
