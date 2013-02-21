@@ -1,5 +1,5 @@
-@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap.css);
-@import url(http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css);
+@import url(http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/css/bootstrap.min.css);
+@import url(http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/css/bootstrap-responsive.min.css);
 @import url(http://fonts.googleapis.com/css?family=Oleo+Script+Swash+Caps);
 @import url(http://fonts.googleapis.com/css?family=PT+Serif);
 body{padding-top:60px;font-family:'PT Serif';background-image:url(../img/back.png);}body div.container div.hero-unit{padding-top:20px;padding-bottom:20px;background-color:powderblue;background-image:url(../img/stripes.png);}
