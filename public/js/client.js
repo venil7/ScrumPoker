@@ -15,10 +15,16 @@
     this._name = this.__ko.observable(name);
     this._room = this.__ko.observable(room);
     this._subj = this.__ko.observable("Task to estimate");
-    this._subj.subscribe(function(){
+    this._subj.subscribe(function(nv){
       that._vote(null);
+      that.update.call(that);
     });
     this._vote = this.__ko.observable(null);
+    this._vote.subscribe(function(nv){
+      if (nv == null) {
+        that.__pubsub.trigger('reset');
+      }
+    });
     this._voteComplete = this.__ko.computed(function() {
       var people = this._people();
       for(var i in people) {
@@ -42,10 +48,6 @@
     this.__socket.on('leave', function(data){that.onLeave.call(that, data);});
     this.__socket.on('join', function(data){that.onJoin.call(that, data);});
     this.__socket.on('message', function(message){that.__pubsub.trigger('message', message);});
-    this._subj.subscribe(function(newVal) {
-      that.update.call(that);
-      that.__pubsub.trigger('reset');
-    });
 
     this.__socket.emit('join', this.state());
 
@@ -60,7 +62,7 @@
   Client.prototype.onUpdate = function(data) {
     this._people.remove(function(el){return el.id == data.id});
     this._people.push(data);
-    this._people.sort();
+    this._people.sort(this.sort);
     this.__pubsub.trigger('update:in', data);
 
     if (this._subj() != data.subj) {
@@ -71,14 +73,15 @@
 
   Client.prototype.onJoin = function(data) {
     this._people.push(data);
-    this._people.sort();
+    this._people.sort(this.sort);
+    this._vote(null); /*experimental*/
     this.__pubsub.trigger('join', data);
     this.update();
   };
 
   Client.prototype.onLeave = function(data) {
     this._people.remove(function(el){return el.id == data.id});
-    this._people.sort();
+    this._people.sort(this.sort);
     this.__pubsub.trigger('leave', data);
   };
   
@@ -100,6 +103,10 @@
       'subj':this._subj(),
       'vote':this._vote()
     };
+  };
+
+  Client.prototype.sort = function(left, right) {
+    return left.id == right.id ? 0 : (left.id < right.id ? -1 : 1);
   };
 
   /*'on document load' code below*/
