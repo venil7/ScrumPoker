@@ -14,10 +14,12 @@
   var io = socket.listen(server);
 
   /*this is a Heroku configuration, not required for other envs*/
-  // io.configure(function () { 
-  //   io.set("transports", ["xhr-polling"]); 
-  //   io.set("polling duration", 10); 
-  // });
+  if (process.env.HEROKU) {
+    io.configure(function () { 
+      io.set("transports", ["xhr-polling"]); 
+      io.set("polling duration", 10); 
+    });
+  }
 
   var Server = function(_und, io) {
     this.__io = io;
