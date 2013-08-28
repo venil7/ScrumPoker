@@ -11,3 +11,5 @@ to run:
  `npm install`  
  `node server.js`  
  navigate to http://localhost:3000
+
+#### [Live demo @ Heroku](http://scrumpoker.herokuapp.com/)
