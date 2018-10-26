@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Instant PlanningPoker</title>
+  <title>Planning Poker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -19,29 +19,23 @@
   <link rel="shortcut icon" href="/img/favicon.png">
 </head>
 <body>
-
-  <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="brand" href="#">Instant Planning Poker</a>
-      </div>
-    </div>
-  </div>
-
   <div class="container">
     
+    <div class="hero-unit">
+      <h2 class="text-center">Planning Poker</h2>
+      <p class="pull-right">Logged in as <span data-bind="text: _name"></span><span data-bind="visible: _isNotEmbedded">@<span data-bind="text: _room"></span></span></p>
+      <p>User Story:</p>
+      <input type="text" style="width:500px" data-bind="value: _subj">
+      <p data-bind="visible: _isNotEmbedded">Invite more people to this room: <code data-bind="text: window.location"></code>.</p>
+    </div>
+
     <div class="alert">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Warning!</strong> You need to enter your name and room.
+      <strong>Warning!</strong> You need to enter your name and room. Refresh to try again.
     </div>
-    
-    <div class="hero-unit">
-      <p class="pull-right text-info">Logged in as <span data-bind="text: _name"></span>@<span data-bind="text: _room"></span></p>
-      <h2>Subject: <span id="subject" data-bind="text: _subj"></span></h2>
-      <input type="text" data-bind="value: _subj" class="input-large">
-      <p class="muted">Enter subject above to describe a task being estimated.</p>
-      <p class="text-info">Invite more people to this room: <code data-bind="text: window.location"></code>.</p>
-    </div>
+
+    <h3 class="text-center" data-bind="text: _subj"></h3>
+    <h3 class="text-center" data-bind="text: _timer"></h3>
 
     <h3>Cards</h3>
     <div class="row" data-bind="foreach: _cards">
@@ -70,26 +64,27 @@
       </div>
     </div>
 
-    <hr />
+    <h3>Stats</h3>
+    <div class="row"></div>
+      <ul>
+        <li>Average: <span id="average"></span></li>
+        <li>Lowest: <span id="lowest"></span></li>
+        <li>Highest: <span id="highest"></span></li>
+      </ul>
+    </div>
+    
     <footer>
-      <p class="text-center footer-note">
-        &copy; Art Deineka 2013,<br>
-        Made to be used with what really deserves to be called a proper browser.<br>
-        Powered by: Node.js, Socket.io, Twitter Bootstrap, Knockout.js, jQuery and Brain.</p>
+      <p class="text-center footer-note"></p>
     </footer>
   </div> <!-- /container -->
-
-  <a href="https://github.com/venil7/ScrumPoker">
-    <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub">
-  </a>
 
   <!-- Le javascript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
-  <script src="js/bootbox.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="//ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script><!-- js/bootbox.min.js https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js -->
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/client.js"></script>
 

@@ -5,17 +5,38 @@
     this.__ko = ko;
     this.__io = io;
     this.__pubsub = pubsub /*this will be used as event publisher/subscriber*/
-    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, 'C']);
+    this._cards = this.__ko.observableArray([0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100, '?']);
     this._people = this.__ko.observableArray([]);
   };
 
-  Client.prototype.init = function(name, room) {
+  Client.prototype.init = function(name, room, isNotEmbedded) {
     var that = this;
     
     this._name = this.__ko.observable(name);
     this._room = this.__ko.observable(room);
-    this._subj = this.__ko.observable("Task to estimate");
+    this._isNotEmbedded = this.__ko.observable(isNotEmbedded);
+    this._subj = this.__ko.observable("");
+    this._timer = this.__ko.observable("");
+    this.__interval = null;
+    this.__lastInterval = null;
+
     this._subj.subscribe(function(nv){
+      var seconds = 0;
+      if (that.__lastInterval) {
+        window.clearInterval(that.__lastInterval);
+      }
+      that.__interval = window.setInterval(function() {
+        seconds++;
+        var mins = Math.floor(seconds / 60);
+        var secs = seconds - (mins * 60);
+        if (String.prototype.padStart) {
+          that._timer(mins.toString().padStart(2, "0") + ":" + secs.toString().padStart(2, "0"));
+        }
+        else {
+          that._timer(mins + ":" + secs);
+        }
+      }.bind(that), 1000);
+      that.__lastInterval = that.__interval;
       that._vote(null);
       that.update.call(that);
     });
@@ -33,10 +54,13 @@
           return false;
         }
       }
-      return true;
+      return people.length > 1 ? true : false;
     }, this);
     this._voteComplete.subscribe(function (nv) {
       if (nv) {
+        if (that.__lastInterval) {
+          window.clearInterval(that.__lastInterval);
+        }
         that.__pubsub.trigger('reveal');
       } 
     });
@@ -122,16 +146,28 @@
     bootbox.prompt("What is your name?", function(n) {
       if (n) {
         name = n;
+
+        var isNotEmbedded = true;
+        try {
+          var frame = window.frameElement;
+          if (frame != null) {
+            isNotEmbedded = false;
+          }
+        }
+        catch(e) {
+          isNotEmbedded = false;
+        }
+        isNotEmbedded = false;
         if (!room) {
           bootbox.prompt("Choose a name for poker room", function(r) {
             if (r !== null) {
               room = r;
               window.location.hash = "#" + room;
-              client.init(name, room);
+              client.init(name, room, isNotEmbedded);
             }
           });
         } else { /*has room name*/
-          client.init(name, room); /*!DRY*/
+          client.init(name, room, isNotEmbedded); /*!DRY*/
         }
       }
     });
@@ -145,9 +181,34 @@
 
     client.on('reset', function(){
       $('.card').removeClass('selected');
+      $('#average').html('');
+      $('#lowest').html('');
+      $('#highest').html('');
     });
 
     client.on('reveal', function(){
+      var total = 0;
+      var people = 0;
+      var lowest = NaN;
+      var highest = NaN;
+      client._people().forEach(person => {
+        if (isNaN(parseInt(person.vote))) {
+          return;
+        }
+        total += person.vote;
+        people += 1;
+        if (isNaN(lowest) || person.vote < lowest) {
+          lowest = person.vote;
+        }
+        if (isNaN(highest) || person.vote > highest) {
+          highest = person.vote;
+        }
+      });
+
+      $('#average').html(people > 0 ? (total*1.0/people).toFixed(1) : "");
+      $('#lowest').html(lowest);
+      $('#highest').html(highest);
+
       $('.flippable').each(function(i, val) {
           setTimeout(function(){
               $(val).addClass('flipped');
