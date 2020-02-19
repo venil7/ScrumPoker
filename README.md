@@ -1,15 +1,20 @@
-## scrum planning poker
+# scrum planning poker
 
-used all usual suspects:
- - node.js
- - socket.io
- - knockout.js
- - bootsrap
- - jQuery
+Technologies used (2013):
 
-to run:  
- `npm install`  
- `node server.js`  
- navigate to http://localhost:3000
+- node.js
+- socket.io
+- knockout.js
+- bootsrap
+- jQuery
+
+### run locally:
+
+```
+ $ npm install
+ $ node server.js
+```
+
+navigate to http://localhost:3000
 
 #### [Live demo @ Heroku](http://scrumpoker.herokuapp.com/)
